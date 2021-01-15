@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Davey's Sports Game</title>
+</head>
+<body>
+    <!-- include an element for ReactDOM to attach our React-generated elements to -->
+    <div id="root"></div>
+
+    <!-- include React and ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- include Babel standalone so we can process JSX in React.createElement stuff -->
+    <script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <!-- include our JS+JSX for the React Appliccation -->
+<script type="text/babel">
+class Team extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            shots: 0,
+            score: 0
+        }
+        this.shotSound = new Audio('./assets/Timer2.wav')
+        this.scoreSound = new Audio('./assets/applause7.wav')
+    }
+    shotIncrement = (event) => {     
+        this.shotSound.play(); 
+        let shot = Math.random();
+        if (shot>0.5) {
+            this.state.score += 1
+            setTimeout(() => {
+                this.scoreSound.play()
+            }, 1500)
+        }
+                this.setState((state, props) => ({
+                    shots: state.shots + 1
+                }));
+    }
+
+    render() {
+        let shotPercentDiv
+
+        if (this.state.shots) {
+            const shotPercent = Math.round(this.state.score/this.state.shots * 100)
+            shotPercentDiv = (
+                <div>
+                <strong>Shooting = </strong> {shotPercent} %
+                </div>
+            )
+        }
+        return (
+        <div>
+            <h3> {this.props.name} </h3> 
+            <img height="100px" width="150px" src={this.props.logo}></img>  
+            <div>
+                SHOTS: {this.state.shots}
+            </div>
+
+            <div>
+                SCORE: {this.state.score}
+            </div>
+
+            {shotPercentDiv}
+
+            <div>
+                <button onClick={this.shotIncrement}>SHOOT!</button>
+            </div>
+            
+        </div>)
+    }
+}
+function Game(props) {
+    return ( 
+    <div>
+        <h1>Welcome to {props.venue} for today's game!!</h1>
+        <div>
+            <Team name="Home Team: Dolphins" logo='./assets/dolphin logo.png' />
+        </div> 
+        <h1>VERSUS</h1> 
+        <div>
+        <Team name="Visiting Team: Packers" logo="./assets/packers logo.png" />  
+        </div>
+    </div>)
+}
+// An App component under which all other components will be added
+function App (props) {
+  return (
+    <Game venue="Hard Rock Stadium" />
+  )
+}
+
+// Render the App  <!-- "./assets/images/name.png"-->
+ReactDOM.render(
+    // <div>
+        <App />,
+        document.getElementById('root')
+)
+</script>
+</body>
+</html>

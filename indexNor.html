@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Davey's Sports Game</title>
+</head>
+<body>
+    <!-- include an element for ReactDOM to attach our React-generated elements to -->
+    <div id="root"></div>
+
+    <!-- include React and ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- include Babel standalone so we can process JSX in React.createElement stuff -->
+    <script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <!-- include our JS+JSX for the React Appliccation -->
+<script type="text/babel">
+class Team extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            shots: 0,
+            score: 0
+        }
+    }
+    shotIncrement = (event) => {     
+        
+        let shot = Math.random();
+        if (shot>0.5) {
+            this.state.score += 1
+        }
+                this.setState((state, props) => ({
+                    shots: state.shots + 1
+                }));
+    }
+
+    render() {
+        return (
+        <div>
+            <h1> {this.props.name} </h1> 
+            <img height="100px" width="150px" src={this.props.logo}></img>  
+            <div>
+                SHOTS: {this.state.shots}
+            </div>
+
+            <div>
+                SCORE: {this.state.score}
+            </div>
+            <div>
+                <button onClick={this.shotIncrement}>SHOOT!</button>
+            </div>
+        </div>)
+    }
+}
+
+// An App component under which all other components will be added
+function App (props) {
+  return (
+    <div>
+      <h1>Welcome to the Sports Game starter!</h1>
+      <div>
+      <Team name="Home Team: Dolphins" logo='./assets/dolphin logo.png' />
+        <div> <h1>VERSUS</h1> </div>
+      <Team name="Visiting Team: Packers" logo="./assets/packers logo.png" />  
+      </div>
+    </div>
+  )
+}
+
+// Render the App  <!-- "./assets/images/name.png"-->
+ReactDOM.render(
+    // <div>
+        <App />,
+        document.getElementById('root')
+)
+</script>
+</body>
+</html>
